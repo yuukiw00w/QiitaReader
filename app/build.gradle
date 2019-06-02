@@ -1,0 +1,74 @@
+import java.text.SimpleDateFormat
+
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+android {
+    compileSdkVersion androidVersions.compileSdk
+    buildToolsVersion androidVersions.buildTools
+
+    defaultConfig {
+        applicationId "jp.yn.android.light.reader"
+        minSdkVersion androidVersions.minSdk
+        targetSdkVersion androidVersions.targetSdk
+        versionCode appVersions.code
+        versionName appVersions.name
+    }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == "release") {
+            variant.outputs.all {
+                def versionName = variant.versionName
+                def date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+                def newName = "release_v${versionName}_${date}.apk"
+                outputFileName = newName
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            def currentTimeMs = System.currentTimeMillis()
+            def branchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
+            manifestPlaceholders = [app_name: "${makeDate(currentTimeMs)} ${branchName}"]
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "_d"
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+static String makeDate(final long currentTimeMs) {
+    return new SimpleDateFormat("MMdd-HHmm").format(new Date(currentTimeMs))
+}
+
+dependencies {
+    api project(':repository')
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$libraryVersions.kotlin"
+
+    implementation "androidx.appcompat:appcompat:$libraryVersions.appcompat"
+    implementation "androidx.constraintlayout:constraintlayout:$libraryVersions.constraintlayout"
+    implementation "androidx.recyclerview:recyclerview:$libraryVersions.recyclerview"
+    implementation "androidx.lifecycle:lifecycle-extensions:$libraryVersions.lifecycle"
+    implementation "androidx.navigation:navigation-fragment:$libraryVersions.navigation"
+    implementation "androidx.navigation:navigation-fragment-ktx:$libraryVersions.navigation"
+    implementation "androidx.navigation:navigation-ui:$libraryVersions.navigation"
+
+    implementation "com.jakewharton.timber:timber:$libraryVersions.timber"
+}
