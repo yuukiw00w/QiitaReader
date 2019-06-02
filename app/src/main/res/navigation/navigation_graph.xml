@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/item_list_fragment">
+    <fragment
+        android:id="@+id/item_list_fragment"
+        android:name="jp.yn.android.light.reader.ItemListFragment"
+        android:label="ItemListFragment">
+        <action
+            android:id="@+id/action_list_to_content_fragment"
+            app:destination="@id/item_content_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/item_content_fragment"
+        android:name="jp.yn.android.light.reader.ItemContentFragment"
+        android:label="ItemContentFragment">
+        <argument
+            android:name="item"
+            app:argType="jp.co.yahoo.android.repository.item.ItemEntity" />
+    </fragment>
+</navigation>

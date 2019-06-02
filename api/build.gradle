@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion androidVersions.compileSdk
+    buildToolsVersion androidVersions.buildTools
+
+    defaultConfig {
+        minSdkVersion androidVersions.minSdk
+        targetSdkVersion androidVersions.targetSdk
+        versionCode appVersions.code
+        versionName appVersions.name
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$libraryVersions.kotlin"
+
+    implementation "com.squareup.moshi:moshi:$libraryVersions.moshi"
+    implementation "com.squareup.moshi:moshi-kotlin:$libraryVersions.moshi"
+    implementation "com.squareup.retrofit2:retrofit:$libraryVersions.retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$libraryVersions.retrofit"
+    implementation "com.squareup.okhttp3:okhttp:$libraryVersions.okhttp"
+    implementation "com.jakewharton.timber:timber:$libraryVersions.timber"
+}
