@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="UncheckSpellingFiles" pattern="file:*.md||file:*.dic" />
+</component>
